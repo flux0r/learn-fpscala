@@ -22,6 +22,42 @@ val x = List(1,2,3,4,5) match {
  * matches completely and assigns 1 to x and 2 to y; their sum is 3.
  */
 
+
 /*
- * EXERCISE 2: See List.scala.
+ * | EXERCISE 2: See List.scala.
+ */
+
+
+/*
+ * | EXERCISE 3: See List.scala.
+ */
+
+
+/*
+ * | EXERCISE 4: See List.scala.
+ */
+
+
+/*
+ * | EXERCISE 5: See List.scala.
+ */
+
+
+/*
+ * | EXERCISE 6: See List.scala.
+ */
+
+
+/*
+ * | EXERCISE 7:
+ *
+ * Can product implemented using foldRight immediately halt the recursion
+ * and return 0.0 if it encounters a 0.0? Why or why not? Consider how any
+ * short-circuiting might work if you call foldRight with a large list. This
+ * is a deeper question that we'll return to a few chapters from now.
+ */
+
+/* foldRight can't stop prematurely because Scala is normal-order by default
+ * and the function will not be called until the fold traverses the entire
+ * data structure.
  */

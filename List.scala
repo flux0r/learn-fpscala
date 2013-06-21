@@ -1,8 +1,8 @@
 package fpinscala.datastructures
 
-sealed trait List[a]
-case class Nil[a]() extends List[a]
-case class Cons[a](head: a, tail: List[a]) extends List[a]
+sealed trait List[+a]
+case object Nil extends List[Nothing]
+case class Cons[+a](head: a, tail: List[a]) extends List[a]
 
 
 object List {
@@ -16,7 +16,7 @@ object List {
  */
 
 def tail[a](xs: List[a]): List[a] = xs match {
-	case Nil() => Nil()
+	case Nil => Nil
 	case Cons(x_, xs_) => xs_
 }
 
@@ -52,7 +52,7 @@ def drop[a](xs: List[a], n: Int): List[a] = {
 
 def dropWhile[a](_xs: List[a])(p: a => Boolean): List[a] =
 	_xs match {
-		case Nil() => Nil()
+		case Nil => Nil
 		case Cons(x, xs) => if (p(x)) {
 			dropWhile(xs)(p)
 		} else {
@@ -69,7 +69,7 @@ def dropWhile[a](_xs: List[a])(p: a => Boolean): List[a] =
  */
 
 def setHead[a](_xs: List[a], _x: a): List[a] = _xs match {
-	case Nil() => Cons(_x, _xs)
+	case Nil => Cons(_x, _xs)
 	case Cons(x, xs) => Cons(_x, xs)
 }
 
@@ -84,20 +84,26 @@ def setHead[a](_xs: List[a], _x: a): List[a] = _xs match {
  */
 
 def init[a](_xs: List[a]): List[a] = _xs match {
-	case Nil() => Nil()
-	case Cons(_, Nil()) => Nil()
+	case Nil => Nil
+	case Cons(_, Nil) => Nil
 	case Cons(x, xs) => Cons(x, init(xs))
 }
 
+/*
+ * init can't be implemented in constant time because the constructors for
+ * List only let me break a List into the head and tail. This means I have
+ * to traverse the entire structure, copying all along, to get to the end.
+ */
+
 
 def sum(xs: List[Int]): Int = xs match {
-	case Nil() => 0
+	case Nil => 0
 	case Cons(x, xs_) => x + sum(xs_)
 }
 
 
 def product(xs: List[Double]): Double = xs match {
-	case Nil() => 1.0
+	case Nil => 1.0
 	case Cons(0.0, _) => 0.0
 	case Cons(x, xs_) => x*product(xs_)
 }
@@ -105,14 +111,21 @@ def product(xs: List[Double]): Double = xs match {
 
 def apply[a](xs: a*): List[a] = {
 	if (xs.isEmpty) {
-		Nil()
+		Nil
 	} else {
 		Cons(xs.head, apply(xs.tail: _*))
 	}
 }
 
 
-val example = Cons(1, Cons(2, Cons(3, Nil())))
+def foldRight[a, b](_xs: List[a], z: b)(f: (a, b) => b): b =
+	_xs match {
+		case Nil => z
+		case Cons(x, xs) => f(x, foldRight(xs, z)(f))
+	}
+
+
+val example = Cons(1, Cons(2, Cons(3, Nil)))
 val example2 = List(1, 2, 3)
 val total = sum(example)
 
