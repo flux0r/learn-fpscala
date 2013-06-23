@@ -1,4 +1,5 @@
-import fpinscala.datastructures._
+import fpinscala.datastructures.Cons
+import fpinscala.datastructures.Nil
 import fpinscala.datastructures.List._
 
 /*
@@ -9,7 +10,7 @@ import fpinscala.datastructures.List._
 
 val x = List(1,2,3,4,5) match {
 	case Cons(x, Cons(2, Cons(4, _))) => x
-	case Nil() => 42
+	case Nil => 42
 	case Cons(x, Cons(y, Cons(3, Cons(4, _)))) => x + y
 	case Cons(h, t) => h + sum(t)
 	case _ => 101
@@ -77,4 +78,14 @@ val x = List(1,2,3,4,5) match {
  * Running this gives me the same list back. foldRight is essentially
  * replacing Nils with the starting element and Conses(?) with the function
  * operating on the data structure given to to it.
+ */
+
+
+/*
+ * | EXERCISE 9: See List.scala.
+ */
+
+
+/*
+ * | EXERCISE 10: See List.scala.
  */

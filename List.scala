@@ -125,6 +125,37 @@ def foldRight[a, b](_xs: List[a], z: b)(f: (a, b) => b): b =
 	}
 
 
+/*
+ * | EXERCISE 9:
+ *
+ * Compute the length of a list using foldRight.
+ */
+
+def length[a](xs: List[a]): Int =
+        List.foldRight(xs, 0)((_, c) => c + 1)
+
+
+/*
+ * | EXERCISE 10:
+ *
+ * foldRight is not tail-recursive and will StackOverflow for large lists.
+ * Convince yourself that this is the case, then write another general
+ * list-recursion function, foldLeft that is tail-recursive, using the
+ * techniques we discussed in the previous chapter.
+ */
+
+/*
+ * foldRight isn't tail-recursive because there is still evaluation of the
+ * function left after the recursive calls return.
+ */
+
+def foldLeft[a, b](_xs: List[a], z: b)(f: (b, a) => b): b =
+	_xs match {
+		case Nil =>  z
+		case Cons(x, xs) => f(foldLeft(xs, z)(f), x)
+	}
+
+
 val example = Cons(1, Cons(2, Cons(3, Nil)))
 val example2 = List(1, 2, 3)
 val total = sum(example)
