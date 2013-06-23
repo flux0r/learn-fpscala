@@ -7,7 +7,7 @@ case class Cons[+a](head: a, tail: List[a]) extends List[a]
 
 object List {
 /* 
- * | Chapter 2 EXERCISE 2:
+ * | Chapter 3 EXERCISE 2:
  *
  * Implement the function tail for "removing" the first element of a List.
  * Notice the function takes constant time. What are different choices you
@@ -26,7 +26,7 @@ def tail[a](xs: List[a]): List[a] = xs match {
 
 
 /*
- * | Chapter 2 EXERCISE 3:
+ * | Chapter 3 EXERCISE 3:
  *
  * Generalize tail to the function drop, which removes the first n elements
  * from a List.
@@ -42,7 +42,7 @@ def drop[a](xs: List[a], n: Int): List[a] = {
 
 
 /*
- * | Chapter 2 EXERCISE 4:
+ * | Chapter 3 EXERCISE 4:
  *
  * Implement dropWhile, which removes elements from the List prefix as long
  * as they match a predicate. Again, notice these functions take time
@@ -62,7 +62,7 @@ def dropWhile[a](_xs: List[a])(p: a => Boolean): List[a] =
 
 
 /*
- * | Chapter 2 EXERCISE 5:
+ * | Chapter 3 EXERCISE 5:
  *
  * Using the same idea, implement the function setHead for replacing the
  * first element of a List with a different value.
@@ -75,7 +75,7 @@ def setHead[a](_xs: List[a], _x: a): List[a] = _xs match {
 
 
 /*
- * | Chapter 2 EXERCISE 6:
+ * | Chapter 3 EXERCISE 6:
  *
  * Not everything works out so nicely. Implement a function, init, which
  * returns a List consisting of all but the last element of a List. So,
