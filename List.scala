@@ -146,7 +146,8 @@ def length[a](xs: List[a]): Int =
 
 /*
  * foldRight isn't tail-recursive because there is still evaluation of the
- * function left after the recursive calls return.
+ * function left after the recursive calls return. Eventually, I'll run out
+ * of stack space for the unevaluated functions.
  */
 
 def foldLeft[a, b](_xs: List[a], z: b)(f: (b, a) => b): b =
@@ -154,6 +155,21 @@ def foldLeft[a, b](_xs: List[a], z: b)(f: (b, a) => b): b =
 		case Nil =>  z
 		case Cons(x, xs) => f(foldLeft(xs, z)(f), x)
 	}
+
+
+/*
+ * | EXERCISE 11: Write sum, product, and a function to compute the length
+ * of a list using foldLeft.
+ */
+
+def leftSum(_xs: List[Int]): Int =
+	List.foldLeft(_xs, 0)((x, y) => x + y)
+
+def leftProduct(_xs: List[Double]): Double =
+	List.foldLeft(_xs, 1.0)((x, y) => x*y)
+
+def leftLength[a](_xs: List[a]): Int =
+	List.foldLeft(_xs, 0)((c, _) => c + 1)
 
 
 val example = Cons(1, Cons(2, Cons(3, Nil)))
