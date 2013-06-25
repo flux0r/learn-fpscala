@@ -187,8 +187,13 @@ def reverse[a](_xs: List[a]): List[a] =
  * about the other way around?
  */
 
-def foldLeftByFoldRight[a, b](_xs: List[a], z: b)(f: (b, a) => b): b =
-	foldRight(_xs, (x: b) => x)((y, g) => x => g(f(x, y)))(z)
+def foldLeftByFoldRight[a, b](_xs: List[a], z: b)(f: (b, a) => b): b = {
+	def id[a](_x: a): a = _x
+	def step[a, b](g: b => b, _y: a) = {
+		_x: b => g(f(_x, _y))
+	}
+	foldRight(_xs, id)(step)(z)
+}
 
 
 val example = Cons(1, Cons(2, Cons(3, Nil)))
