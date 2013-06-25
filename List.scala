@@ -6,7 +6,8 @@ case class Cons[+a](head: a, tail: List[a]) extends List[a]
 
 
 object List {
-/* 
+
+/*----------------------------------------------------------------------------
  * | Chapter 3 EXERCISE 2:
  *
  * Implement the function tail for "removing" the first element of a List.
@@ -25,7 +26,7 @@ def tail[a](xs: List[a]): List[a] = xs match {
  */
 
 
-/*
+/*----------------------------------------------------------------------------
  * | Chapter 3 EXERCISE 3:
  *
  * Generalize tail to the function drop, which removes the first n elements
@@ -41,7 +42,7 @@ def drop[a](xs: List[a], n: Int): List[a] = {
 }
 
 
-/*
+/*----------------------------------------------------------------------------
  * | Chapter 3 EXERCISE 4:
  *
  * Implement dropWhile, which removes elements from the List prefix as long
@@ -61,7 +62,7 @@ def dropWhile[a](_xs: List[a])(p: a => Boolean): List[a] =
 	}
 
 
-/*
+/*----------------------------------------------------------------------------
  * | Chapter 3 EXERCISE 5:
  *
  * Using the same idea, implement the function setHead for replacing the
@@ -74,7 +75,7 @@ def setHead[a](_xs: List[a], _x: a): List[a] = _xs match {
 }
 
 
-/*
+/*----------------------------------------------------------------------------
  * | Chapter 3 EXERCISE 6:
  *
  * Not everything works out so nicely. Implement a function, init, which
@@ -95,6 +96,8 @@ def init[a](_xs: List[a]): List[a] = _xs match {
  * to traverse the entire structure, copying all along, to get to the end.
  */
 
+
+/*--------------------------------------------------------------------------*/
 
 def sum(xs: List[Int]): Int = xs match {
 	case Nil => 0
@@ -125,7 +128,7 @@ def foldRight[a, b](_xs: List[a], z: b)(f: (a, b) => b): b =
 	}
 
 
-/*
+/*----------------------------------------------------------------------------
  * | EXERCISE 9:
  *
  * Compute the length of a list using foldRight.
@@ -135,7 +138,7 @@ def length[a](xs: List[a]): Int =
         foldRight(xs, 0)((_, c) => c + 1)
 
 
-/*
+/*----------------------------------------------------------------------------
  * | EXERCISE 10:
  *
  * foldRight is not tail-recursive and will StackOverflow for large lists.
@@ -157,7 +160,7 @@ def foldLeft[a, b](_xs: List[a], z: b)(f: (b, a) => b): b =
 	}
 
 
-/*
+/*----------------------------------------------------------------------------
  * | EXERCISE 11: Write sum, product, and a function to compute the length
  * of a list using foldLeft.
  */
@@ -172,7 +175,7 @@ def leftLength[a](_xs: List[a]): Int =
 	foldLeft(_xs, 0)((c, _) => c + 1)
 
 
-/*
+/*----------------------------------------------------------------------------
  * | EXERCISE 12: Write a function that returns the reverse of a list (so
  * given List(1, 2, 3), it returns List(3, 2, 1)). See if you can write using
  * a fold.
@@ -182,20 +185,71 @@ def reverse[a](_xs: List[a]): List[a] =
 	foldLeft(_xs, Nil: List[a])((xs, x) => Cons(x, xs))
 
 
-/*
+/*----------------------------------------------------------------------------
  * | EXERCISE 13 (hard): Can you write foldLeft in terms of foldRight? How
  * about the other way around?
  */
 
 def foldLeftByFoldRight[a, b](_xs: List[a], z: b)(f: (b, a) => b): b = {
-	def id[a](_x: a): a = _x
-	def step[a, b](g: b => b, _y: a) = {
-		_x: b => g(f(_x, _y))
-	}
-	foldRight(_xs, id)(step)(z)
+	def id(x: b): b = x
+	def combiner(x: a, g: b => b) = (y: b) => g(f(y, x))
+	foldRight(_xs, id(_))(combiner)(z)
 }
 
+def foldRightByFoldLeft[a, b](_xs: List[a], z: b)(f: (a, b) => b): b = {
+	def flip[a, b, c](g: (a, b) => c): (b, a) => c =
+		(x, y) => g(y, x)
+	foldLeft(reverse(_xs), z)(flip(f))
+}
+	
+/*
+ * | Showing equivalence of foldLeft and foldLeftByFoldRight.
+ *
+ * foldLeft(Cons(1, Cons(2, Nil)), 0)(_+_)
+ * foldLeft(Cons(2, Nil), (0 + 1))(_+_)
+ * foldLeft(Nil, ((0 + 1) + 2))(_+_)
+ * ((0 + 1) + 2)
+ * 
+ * foldLeftByFoldRight(Cons(1, Cons(2, Nil)), 0)(_+_)
+ * foldRight(Cons(1, Cons(2, Nil)), id)(combiner)(0)
+ * combiner(1, foldRight(Cons(2, Nil), id)(combiner))(0)
+ * combiner(1, combiner(2, foldRight(Nil, id)(combiner)))(0)
+ * combiner(1, combiner(2, id))(0)
+ * ((y1: b) => combiner(2, id)(y1 + 1))(0)
+ * ((y1: b) => ((y0: b) => id(y0 + 2))(y1 + 1))(0)
+ * ((y0:b) => id(y0 + 2))(0 + 1)
+ * id((0 + 1) + 2)
+ * ((0 + 1) + 2)
+ *
+ */
 
+/* 
+ * | Showing equivalence of foldRight and foldRightByFoldLeft.
+ *
+ * foldRight(Cons(1, Cons(2, Nil)), 0)(_+_)
+ * (1 + foldRight(Cons(2, Nil), 0)(_+_))
+ * (1 + (2 + foldRight(Nil, 0)(_+_)))
+ * (1 + (2 + 0))
+ * 
+ * 
+ * foldRightByFoldLeft(Cons(1, Cons(2, Nil)), 0)(_+_)
+ * foldLeft(reverse(Cons(1, Cons(2, Nil))), 0)(flip(f))
+ * foldLeft(foldLeft(Cons(1, Cons(2, Nil)), Nil)((xs, x) => Cons(x, xs)),
+ *	0)(flip(f))
+ * foldLeft(foldLeft(Cons(2, Nil), Cons(1, Nil))((xs, x) => Cons(x, xs)),
+ * 	0)(flip(f))
+ * foldLeft(foldLeft(Nil, Cons(2, Cons(1, Nil)))((xs, x) => Cons(x, xs)),
+ * 	0)(flip(f))
+ * foldLeft(Cons(2, Cons(1, Nil)), 0)(flip(f))
+ * foldLeft(Cons(2, Cons(1, Nil)), 0)((x, y) => (y + x))
+ * foldLeft(Cons(1, Nil), (2 + 0))((x, y) => (y + x))
+ * foldLeft(Nil, (1 + (2 + 0)))((x, y) => (y + x))
+ * (1 + (2 + 0))
+ * 
+ */
+
+
+/*--------------------------------------------------------------------------*/
 val example = Cons(1, Cons(2, Cons(3, Nil)))
 val example2 = List(1, 2, 3)
 val total = sum(example)
