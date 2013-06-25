@@ -129,7 +129,7 @@ def foldRight[a, b](_xs: List[a], z: b)(f: (a, b) => b): b =
 
 
 /*----------------------------------------------------------------------------
- * | EXERCISE 9:
+ * | Chapter 3 EXERCISE 9:
  *
  * Compute the length of a list using foldRight.
  */
@@ -139,7 +139,7 @@ def length[a](xs: List[a]): Int =
 
 
 /*----------------------------------------------------------------------------
- * | EXERCISE 10:
+ * | Chapter 3 EXERCISE 10:
  *
  * foldRight is not tail-recursive and will StackOverflow for large lists.
  * Convince yourself that this is the case, then write another general
@@ -161,8 +161,10 @@ def foldLeft[a, b](_xs: List[a], z: b)(f: (b, a) => b): b =
 
 
 /*----------------------------------------------------------------------------
- * | EXERCISE 11: Write sum, product, and a function to compute the length
- * of a list using foldLeft.
+ * | Chapter 3 EXERCISE 11:
+ *
+ * Write sum, product, and a function to compute the length of a list using
+ * foldLeft.
  */
 
 def leftSum(_xs: List[Int]): Int =
@@ -176,9 +178,10 @@ def leftLength[a](_xs: List[a]): Int =
 
 
 /*----------------------------------------------------------------------------
- * | EXERCISE 12: Write a function that returns the reverse of a list (so
- * given List(1, 2, 3), it returns List(3, 2, 1)). See if you can write using
- * a fold.
+ * | Chapter 3 EXERCISE 12:
+ *
+ * Write a function that returns the reverse of a list (so given List(1, 2,
+ * 3), it returns List(3, 2, 1)). See if you can write using a fold.
  */
 
 def reverse[a](_xs: List[a]): List[a] =
@@ -186,8 +189,10 @@ def reverse[a](_xs: List[a]): List[a] =
 
 
 /*----------------------------------------------------------------------------
- * | EXERCISE 13 (hard): Can you write foldLeft in terms of foldRight? How
- * about the other way around?
+ * | Chapter 3 EXERCISE 13 (hard):
+ *
+ * Can you write foldLeft in terms of foldRight? How about the other way
+ * around?
  */
 
 def foldLeftByFoldRight[a, b](_xs: List[a], z: b)(f: (b, a) => b): b = {
@@ -249,7 +254,28 @@ def foldRightByFoldLeft[a, b](_xs: List[a], z: b)(f: (a, b) => b): b = {
  */
 
 
+/*----------------------------------------------------------------------------
+ * | Chapter 3 EXERCISE 14:
+ *
+ * Implement append in terms of either foldLeft or foldRight.
+ */
+
+def append[a](_xs: List[a], _ys: List[a]): List[a] =
+	foldRight(_xs, _ys)(Cons(_, _))
+
+/*
+ * | Tracing append.
+ *
+ * append(Cons(1, Cons(2, Nil)), Cons(6, Nil))
+ * foldRight(Cons(1, Cons(2, Nil)), Cons(6, Nil))(Cons(_, _))
+ * Cons(1, foldRight(Cons(2, Nil), Cons(6, Nil)))(Cons(_, _))
+ * Cons(1, Cons(2, foldRight(Nil, Cons(6, Nil))))(Cons(_, _))
+ * Cons(1, Cons(2, Cons(6, Nil)))
+ */
+
+
 /*--------------------------------------------------------------------------*/
+
 val example = Cons(1, Cons(2, Cons(3, Nil)))
 val example2 = List(1, 2, 3)
 val total = sum(example)
