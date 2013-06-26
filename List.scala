@@ -274,6 +274,36 @@ def append[a](_xs: List[a], _ys: List[a]): List[a] =
  */
 
 
+/*----------------------------------------------------------------------------
+ * | Chapter 3 EXERCISE 15 (hard):
+ *
+ * Write a function that concatenates a list of lists into a single list. Its
+ * runtime should be linear in the total length of all lists. Try to use
+ * functions we have already defined.
+ */
+
+def join[a](_xs: List[List[a]]): List[a] =
+	foldLeft(_xs, Nil: List[a])(append)
+
+/*
+ * | Tracing join.
+ *
+ * join(Cons(Cons(2, Cons(3, Nil)), Cons(Cons(5, Nil), Nil)))
+ * foldLeft(Cons(Cons(2, Cons(3, Nil)), Cons(Cons(5, Nil), Nil)), Nil)(append)
+ * foldLeft(Cons(Cons(5, Nil), Nil),
+ *	append(Nil, Cons(2, Cons(3, Nil))))(append)
+ * foldLeft(Nil, append(append(Nil, Cons(2, Cons(3, Nil))),
+ *	Cons(5, Nil)))(append)
+ * append(append(Nil, Cons(2, Cons(3, Nil))), Cons(5, Nil))
+ * append(foldRight(Nil, Cons(2, Cons(3, Nil)))(Cons(_, _)), Cons(5, Nil))
+ * append(Cons(2, Cons(3, Nil)), Cons(5, Nil))
+ * foldRight(Cons(2, Cons(3, Nil)), Cons(5, Nil))(Cons(_, _))
+ * Cons(2, foldRight(Cons(3, Nil), Cons(5, Nil))(Cons(_, _)))
+ * Cons(2, Cons(3, foldRight(Nil, Cons(5, Nil)))(Cons(_, _)))
+ * Cons(2, Cons(3, Cons(5, Nil)))
+ */
+
+
 /*--------------------------------------------------------------------------*/
 
 val example = Cons(1, Cons(2, Cons(3, Nil)))
