@@ -318,6 +318,16 @@ def mapAddOne(_xs: List[Int]): List[Int] = {
 }
 
 
+/*----------------------------------------------------------------------------
+ * | Chapter 3 EXERCISE 17:
+ *
+ * Write a function that turns each value in a List[Double] into a String.
+ */
+
+def mapDoubleToString(_xs: List[Double]): List[String] =
+	foldRight(_xs, Nil: List[String])((x, y) => Cons(x.toString, y))
+
+
 /*--------------------------------------------------------------------------*/
 
 val example = Cons(1, Cons(2, Cons(3, Nil)))
