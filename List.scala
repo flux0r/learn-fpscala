@@ -328,6 +328,17 @@ def mapDoubleToString(_xs: List[Double]): List[String] =
 	foldRight(_xs, Nil: List[String])((x, y) => Cons(x.toString, y))
 
 
+/*----------------------------------------------------------------------------
+ * | Chapter 3 EXERCISE 18:
+ *
+ * Write a function map, that generalizes modifying each element in a list
+ * while maintaining the structure of the list. Here is its signature:
+ */
+
+def map[a, b](_xs: List[a])(f: a => b): List[b] =
+	foldRight(_xs, Nil: List[b])((x, y) => Cons(f(x), y))
+
+
 /*--------------------------------------------------------------------------*/
 
 val example = Cons(1, Cons(2, Cons(3, Nil)))
