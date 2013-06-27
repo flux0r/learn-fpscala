@@ -412,7 +412,23 @@ def addPairs(_xs: List[Int], _ys: List[Int]): List[Int] = _xs match {
 		case Cons(y, ys) => Cons(x + y, addPairs(xs, ys))
 	}
 }
-	
+
+
+/*----------------------------------------------------------------------------
+ * | Chapter 3 EXERCISE 23:
+ *
+ * Generalize the function you just wrote so that it's not specific to
+ * integers or addition.
+ */
+
+def zip[a, b, c] (_xs: List[a], _ys: List[b]) (f: (a, b) => c): List[c] =
+	_xs match {
+		case Nil => Nil
+		case Cons(x, xs) => _ys match {
+			case Nil => Nil
+			case Cons(y, ys) => Cons(f(x, y), zip(xs, ys)(f))
+		}
+	}
 
 
 /*--------------------------------------------------------------------------*/
