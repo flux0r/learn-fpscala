@@ -367,6 +367,18 @@ val filterExample = filter(List(1, 2, 3, 4, 5, 6))((x) => x%2 == 0)
  */
 
 
+/*----------------------------------------------------------------------------
+ * | Chapter 3 EXERCISE 20:
+ *
+ * Write a function flatMap, that works like map except that the function
+ * given will return a list instead of a single result, and that list should
+ * be inserted into the final resulting list. Here is its signature:
+ */
+
+def flatMap[a, b](_xs: List[a])(f: a => List[b]): List[b] =
+	join(map(_xs)(f)) 
+
+
 /*--------------------------------------------------------------------------*/
 
 val example = Cons(1, Cons(2, Cons(3, Nil)))
