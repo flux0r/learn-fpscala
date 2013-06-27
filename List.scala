@@ -339,6 +339,34 @@ def map[a, b](_xs: List[a])(f: a => b): List[b] =
 	foldRight(_xs, Nil: List[b])((x, y) => Cons(f(x), y))
 
 
+/*----------------------------------------------------------------------------
+ * | Chapter 3 EXERCISE 19:
+ *
+ * Write a function filter that removes elements from a list unless they
+ * satisfy a given predicate. Use it to remove all odd numbers from a
+ * List[Int].
+ */
+
+def filter[a](_xs: List[a])(p: a => Boolean): List[a] = {
+	def f(x: a, xs: List[a]): List[a] = {
+		if (p(x)) {
+			Cons(x, xs)
+		} else {
+			xs
+		}
+	}
+	
+	foldRight(_xs, Nil: List[a])(f)
+}
+
+val filterExample = filter(List(1, 2, 3, 4, 5, 6))((x) => x%2 == 0)
+
+/* 
+ * scala> List.filterExample
+ * res0: fpinscala.datastructures.List[Int] = Cons(2,Cons(4,Cons(6,Nil)))
+ */
+
+
 /*--------------------------------------------------------------------------*/
 
 val example = Cons(1, Cons(2, Cons(3, Nil)))
