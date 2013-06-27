@@ -431,6 +431,46 @@ def zip[a, b, c] (_xs: List[a], _ys: List[b]) (f: (a, b) => c): List[c] =
 	}
 
 
+/*----------------------------------------------------------------------------
+ * | Chapter 3 EXERCISE 24 (hard):
+ *
+ * As an example, implement hasSubsequence for checking whether a List
+ * contains another List as a subsequence. For instance, List(1,2,3,4) would
+ * have List(1,2), List(2,3), and List(4) as subsequences, among others. You
+ * may have some difficulty finding a concise purely functional implementation
+ * that is also efficient. That's okay. Implement the function however comes
+ * most naturally. We will return to this implementation in a couple of
+ * chapters and hopefully improve on it. Note: any two values, x, and y, can
+ * be compared for equality in Scala using the expression x == y.
+ */
+
+def hasSubsequence[a](_xs: List[a], _ys: List[a]): Boolean = {
+
+	def prefix(_xs: List[a], _ys: List[a]): Boolean = _xs match {
+		case Nil => false
+		case Cons(x, xs) => _ys match {
+			case Nil => true
+			case Cons(y, ys) => if (x == y) {
+				prefix(xs, ys)
+			} else {
+				false
+			}
+		}
+	}
+	
+	def iter(_xs: List[a]): Boolean = _xs match {
+		case Nil => false
+		case Cons(x, xs) => if (prefix(_xs, _ys)) {
+			true
+		} else {
+			iter(xs)
+		}
+	}
+	
+	iter(_xs)
+}
+
+
 /*--------------------------------------------------------------------------*/
 
 val example = Cons(1, Cons(2, Cons(3, Nil)))
