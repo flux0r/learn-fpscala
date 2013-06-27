@@ -304,6 +304,20 @@ def join[a](_xs: List[List[a]]): List[a] =
  */
 
 
+/*----------------------------------------------------------------------------
+ * | Chapter 3 EXERCISE 16:
+ *
+ * Write a function that transforms a list of integers by adding 1 to each
+ * element. (Reminder: this should be a pure function that returns a new
+ * List!)
+ */
+
+def mapAddOne(_xs: List[Int]): List[Int] = {
+	def addOne(x: Int): Int = x + 1
+	foldRight(_xs, Nil: List[Int])((x, y) => Cons(addOne(x), y))
+}
+
+
 /*--------------------------------------------------------------------------*/
 
 val example = Cons(1, Cons(2, Cons(3, Nil)))
