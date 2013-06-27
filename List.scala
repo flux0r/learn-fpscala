@@ -397,6 +397,24 @@ def filterByFlatMap[a](_xs: List[a])(p: a => Boolean): List[a] = {
 }
 
 
+/*----------------------------------------------------------------------------
+ * | Chapter 3 EXERCISE 22:
+ *
+ * Write a function that accepts two lists and constructs a new list by adding
+ * corresponding elements. For example, List(1, 2, 3) and List (4, 5, 6)
+ * becomes List(5, 7, 9).
+ */
+
+def addPairs(_xs: List[Int], _ys: List[Int]): List[Int] = _xs match {
+	case Nil => Nil
+	case Cons(x, xs) => _ys match {
+		case Nil => Nil
+		case Cons(y, ys) => Cons(x + y, addPairs(xs, ys))
+	}
+}
+	
+
+
 /*--------------------------------------------------------------------------*/
 
 val example = Cons(1, Cons(2, Cons(3, Nil)))
