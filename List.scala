@@ -376,7 +376,25 @@ val filterExample = filter(List(1, 2, 3, 4, 5, 6))((x) => x%2 == 0)
  */
 
 def flatMap[a, b](_xs: List[a])(f: a => List[b]): List[b] =
-	join(map(_xs)(f)) 
+	join(map(_xs)(f))
+
+
+/*----------------------------------------------------------------------------
+ * | Chapter 3 EXERCISE 21:
+ *
+ * Can you use flatMap to implement filter?
+ */
+
+def filterByFlatMap[a](_xs: List[a])(p: a => Boolean): List[a] = {
+	def f(x: a): List[a] = {
+		if (p(x)) {
+			Cons(x, Nil)
+		} else {
+			Nil
+		}
+	}
+	flatMap(_xs)(f)
+}
 
 
 /*--------------------------------------------------------------------------*/
